@@ -57,3 +57,4 @@ int Pila<Elemento>::obtLongitud()
 {
   return Lista<Elemento>::obtLongitud();
 }
+#endif

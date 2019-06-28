@@ -143,7 +143,7 @@ Elemento Lista<Elemento>::consultar(const int& pos){
 	{
 		if(pos==this->longitud)
 		{
-			aux=this->cola
+			aux=this->cola;
 			resp=aux->obtInfo();
 		}
 		else{
