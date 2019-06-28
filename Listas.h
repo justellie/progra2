@@ -40,7 +40,7 @@ public:
 	void vaciar(); 
 	void mezclarOrdenada(Lista<Elemento> &a, Lista<Elemento> &b);																		// vacia la lista y elimina todos sus nodos
 	//void mezclarOrdenada(Lista<Elemento>&,Lista<Elemento>&);
-	Nodo<Elemento>* merge(Nodo<Elemento>* , Nodo<Elemento>* ); 
+	
 };
 
 template<class Elemento>
