@@ -6,24 +6,22 @@
 template <class Elemento>
 class Cola : protected Lista<Elemento>
 {
-protected:
-  Nodo<Elemento> *ultimo;
-
+private:
+  Nodo<Elemento> *cola;	
 public:
-  Cola();
+  
   bool esVacia();
   void encolar(Elemento elemento);
   void desencolar();
   void print();
   Elemento frente();
   int obtLongitud();
+  void vaciar(); 
+
 };
 
-template <class Elemento>
-Cola<Elemento>::Cola()
-{
-  this->ultimo = NULL;
-}
+
+
 
 template <class Elemento>
 bool Cola<Elemento>::esVacia()
@@ -38,16 +36,16 @@ void Cola<Elemento>::encolar(Elemento elemento)
 
   if (this->longitud == 0)
   {
-    Lista<T>::insertar(elemento, 0);
-    this->ultimo = this->primero;
+    Lista<Elemento>::insertar(elemento, 0);
+    this->cola = this->cabeza;
   }
   else
   {
     aux = new Nodo<Elemento>;
     aux->modInfo(elemento);
     aux->modProx(NULL);
-    (this->ultimo)->modProx(aux);
-    this->ultimo = aux;
+    (this->cola)->modProx(aux);
+    this->cola = aux;
     this->longitud += 1;
   }
 }
@@ -56,10 +54,6 @@ template <class Elemento>
 void Cola<Elemento>::desencolar()
 {
   Lista<Elemento>::eliminar(0);
-  if (this->longitud == 0)
-  {
-    this->ultimo = NULL;
-  }
 }
 
 template <class Elemento>
@@ -78,6 +72,11 @@ template <class Elemento>
 int Cola<Elemento>::obtLongitud()
 {
   return Lista<Elemento>::obtLongitud();
+}
+template <class Elemento>
+void Cola<Elemento>::vaciar()
+{
+   Lista<Elemento>::vaciar();
 }
 
 #endif

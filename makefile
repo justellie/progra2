@@ -1,4 +1,4 @@
-TARGET = RUN
+TARGET = test
 LIBS = -lm
 CC = g++ -g
 CFLAGS = -g -Wall

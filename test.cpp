@@ -1,53 +1,35 @@
 #include <iostream>
 #include "Nodo.h"
 #include "Listas.h"
+#include "Cola.h"
+#include "Pila.h"
+
 
 
 using namespace std;
 int main(int argc, char const *argv[])
 {
-	Nodo<int> a;
-	Lista<int> b,c,d;
+	//Nodo<int> a;
+	//Pila<int> a;
+	Cola<int> b;
 	
-	int n;
+	
 
 	int i=0;
 	
-	while(i<30000)
+	while(i<1000)
 	{
 			//cout<<"Introduzca un valor para lista A"<<endl;
 			//cin>>n;
-			b.insertar((i*3),i);
+			b.encolar(i+1);
+			//a.apilar(i+1);
+
 			i++;
 	}
 
-	i=0;
-	while(i<15000)
-	{
-			//cout<<"Introduzca un valor para lista B"<<endl;
-			//cin>>n;
-			c.insertar((i*2),i);
-			i++;
-	}
-		
-	
-	//b.print();
-	
-	//c.print();
-	//cout<<"Antes de invertir"<<endl;
-	//b.printCriminal();
-	//c.printCriminal();
-	d.mezclarOrdenada(c,b);
-
-	d.printCriminal();
-	//cout<<b.consultar(0)<<endl;
+	//a.print();
+	b.print();
 	b.vaciar();
-	c.vaciar();
-	d.vaciar();
-	//cout<<"Despues de invertir"<<endl;
-	//b.invertir();
-	//b.printCriminal();
-	//b.eliminar(6);
-	//b.printCriminal();
+	//a.vaciar();
 	return 0;
 }

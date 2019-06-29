@@ -10,14 +10,13 @@ template<class Elemento>
 class Lista
 {
 
-private:
+protected:
 	//*****************|| ATRIBUTOS ||********************//	
-	Nodo<Elemento> *cabeza,*cola;				 // La cabeza apunta al inicio de la lista mientras que la cola apunta al fin de la lista para asi hacer mas rapido el insertado al final de la misma
+	Nodo<Elemento> *cabeza;				 // La cabeza apunta al inicio de la lista mientras que la cola apunta al fin de la lista para asi hacer mas rapido el insertado al final de la misma
 	int longitud;								// Indica la logitud de la cola
 public:
 	//*****************|| Constructores ||********************//
 	 Lista();									 // No recibe ningun parametro
-	 Lista(Lista<Elemento> &);				    // Constructor copia
 	//*****************|| Destructores||********************//
 	~ Lista();
 	//*****************|| Metodo Publicos||********************//
@@ -29,16 +28,12 @@ public:
 	void print(); 
 	void printCriminal();
 	void eliminar(int pos);						    //Imprime los valores de una lista
-	Lista<Elemento> subLista(int,int);												// retorna una subLista desde un indice hasta el otro	
 	Elemento menor();
 	Elemento mayor();
-	void invertir();
-	void invertir(int , int );
 	void ordenar(bool ascendete);//Ordena de forma ascendente y descendente
 	void modificar(Elemento,int);
 	bool esta(Elemento); 																		// devuelve si un elemento esta o no	
 	void vaciar(); 
-	void mezclarOrdenada(Lista<Elemento> &a, Lista<Elemento> &b);																		// vacia la lista y elimina todos sus nodos
 	//void mezclarOrdenada(Lista<Elemento>&,Lista<Elemento>&);
 	
 };
@@ -46,44 +41,9 @@ public:
 template<class Elemento>
 Lista<Elemento>::Lista(){ 
 	this->cabeza=NULL;
-	this->cola=NULL;
 	this->longitud=0;
 
 }
-template<class Elemento>
-Lista<Elemento>::Lista(Lista<Elemento> &l){
-	this->vaciar();
-	this->copiar(l);
-
-}
-template <class Elemento>
-void Lista<Elemento>::copiar(const Lista<Elemento>&l){
-	Nodo<Elemento> *actual=l.cabeza, *nuevo;//actual es un puntero al primer nodo de la lista l y nuevo cumplira la funcion de añardir los nodos que se encuentren en esa lista l que sean distinto de la cabeza
-	this->vaciar();
-	nuevo=new Nodo<Elemento>;//creo el nodo a utilizar
-	nuevo->modInfo(actual->obtInfo());//copio el contenido del nodo actual en el nuevo nodo
-	nuevo->modProx(NULL);//apunto el prox a NULL
-	cola=nuevo;//cola apunta a nuevo ya que cola se supone que aqui solo existe un solo nodo
-	actual=(actual->obtProx());
-	this->cabeza=nuevo;//La cabeza apunta al nuevo nodo
-	if(l.longitud>0)
-	{
-		while(actual!=NULL)
-		{
-			nuevo= new Nodo<Elemento>;//El nuevo nodo es creado
-			nuevo->modInfo(actual->obtInfo());//la infomacion del nodo l en que nos encontramos es copiada al nuevo nodo
-		  	nuevo->modProx(NULL);//nuevo nodo apunta a null porque se supone que sera añadido al final de la lista
-			cola->modProx(nuevo);//cola que apunta al anterior final de la lista ahora apunta al nuevo finial que sera el nuevo nodo
-			actual=(actual->obtProx());//actual se mueve al proximo nodo 
-			cola=nuevo;//cola apunta al nuevo nodo que es el nuevo final
-		}	
-
-	}
-	else 
-		this->cabeza=NULL;
-		this->cola=NULL;
-	this->longitud=l.longitud;
-};
 template<class Elemento>
 bool Lista<Elemento>::esVacia(){
 	return this->cabeza==NULL;
@@ -119,10 +79,6 @@ void Lista<Elemento>::insertar(Elemento e, const int& pos){
 			}
 			nuevo->modProx(aux->obtProx());//apunto el nuevo nodo al nodo que corresponde al siguiente del actual
 			aux->modProx(nuevo);//apunto el actual al nuevo nodo
-			if(pos==this->longitud+1)//Si la posicion es la final o la final mas uno entonces se punta la cola a ese nodo
-			{
-				this->cola=nuevo;
-			}
 			
 		}
 		this->longitud = this->longitud + 1;//Se suma uno a la logitud
@@ -141,20 +97,12 @@ Elemento Lista<Elemento>::consultar(const int& pos){
 	}
 	else
 	{
-		if(pos==this->longitud)
+		aux=this->cabeza;//Apunta al inicio de la lista
+		for(i=0;i<pos;i++)//Me muevo una posicion hasta llegar a la posicion requerida
 		{
-			aux=this->cola;
-			resp=aux->obtInfo();
+			aux=(aux->obtProx());
 		}
-		else{
-				aux=this->cabeza;//Apunta al inicio de la lista
-				for(i=0;i<pos;i++)//Me muevo una posicion hasta llegar a la posicion requerida
-				{
-					aux=(aux->obtProx());
-				}
-				resp=aux->obtInfo();
-			}
-	
+		resp=aux->obtInfo();
 	}
 	return(resp);	
 }
@@ -185,44 +133,6 @@ void Lista<Elemento>::printCriminal()
 	cout <<"NULL"<< endl;
 }
 
-template<class Elemento>
-Lista<Elemento> Lista<Elemento>::subLista(int inicio, int fin)
-{
-	Nodo<Elemento> *nuevo, *actual;
-	Lista<Elemento> resultado;
-	int i;
-	if(inicio>=0 && inicio<=fin && fin< this->longitud)
-	{
-		actual=this->cabeza;
-		for (i=0;i<inicio;i++)
-		{
-			actual=actual->obtProx();//Pone el puntero actual al inicio 
-		}
-		nuevo= new Nodo<Elemento>;//crea el nodo que va a copiar el dato 
-		nuevo->modInfo(actual->obtInfo());//copia el dato
-		nuevo->modProx(NULL);//apunta a NUll
-		resultado.cabeza=nuevo;//el nuevo nodo que es el inicio del 
-		resultado.cola=nuevo;//cola apunta el nuevo nodo
-		actual=actual->obtProx();// el apuntador se mueve al nodo siguiente
-		for(i=inicio;i<fin;i++)//empiezo a copiar el resto
-		{
-			nuevo= new Nodo<Elemento>;//El nuevo nodo es creado
-			nuevo->modInfo(actual->obtInfo());//la infomacion del nodo l en que nos encontramos es copiada al nuevo nodo
-		  	nuevo->modProx(NULL);//nuevo nodo apunta a null porque se supone que sera añadido al final de la lista
-			resultado.cola->modProx(nuevo);//cola que apunta al anterior final de la lista ahora apunta al nuevo finial que sera el nuevo nodo
-			actual=(actual->obtProx());//actual se mueve al proximo nodo 
-			resultado.cola=nuevo;//cola apunta al nuevo no
-
-		}
-		resultado.longitud=fin-inicio+1;//la logitud es uno puesto que es el primer nodo
-
-
-
-	}
-
-	return(resultado);
-
-}
 template <class Elemento>
 Elemento Lista<Elemento>::mayor()
 {
@@ -344,169 +254,14 @@ void Lista<Elemento>::eliminar(int pos)
 			
 			aux2 = aux->obtProx();
 			aux->modProx(aux2->obtProx());
-			if(pos==this->longitud-1)
-			{
-				this->cola=aux;
-			}
+		
 			delete aux2;
 		}
 		this->longitud = this->longitud - 1;
 	}
 }
-template<class Elemento>
-void Lista<Elemento>::invertir()
-{
-	Nodo<Elemento> *actual,*prev,*proximo;
-	prev=NULL;
-	proximo=NULL;
-	
-	
-	actual=this->cabeza;
-	while( actual!= NULL)
-	{
-			proximo=actual->obtProx();
-			actual->modProx(prev);
-			prev=actual;
-			actual= proximo;
-	}
-	this->cola=this->cabeza;
-	this->cabeza=prev;
 
-}
 
-template <class Elemento>
-void Lista<Elemento>::invertir(int inicio, int fin)
-{
-	Nodo<Elemento> *ini,*fi,*actual,*proximo,*prev,*con;
-	int i;
-	ini=this->cabeza;
-	if(inicio>0 && fin < this->longitud)
-	{
-
-		for(i=0;i<inicio;i++)
-		{
-			prev=ini;
-			ini=ini->obtProx();
-
-		}
-		fi=ini;
-		for(i=inicio;i<fin;i++)
-		{
-			fi=fi->obtProx();
-			
-		}
-		i=0;
-		con=prev;
-		actual=ini;
-		proximo=NULL;
-		while(fin>1)
-		{
-			proximo=actual->obtProx();
-			actual->modProx(prev);
-			prev=actual;
-			actual= proximo;
-			fin--;
-			
-		}
-		if (con != NULL) {
-            con->modProx(prev);
-        } 
-
-        ini->modProx(actual);
-		
-	}
-	else
-	{
-		if(inicio==0 && fin==this->longitud)
-		{
-			this->invertir();
-		}
-		else
-		{
-			if(inicio>0 && fin==this->longitud)
-			{
-
-				for(i=0;i<inicio;i++)
-				{
-					prev=ini;
-					ini=ini->obtProx();
-
-				}
-				fi=ini;
-				for(i=inicio;i<fin;i++)
-				{
-					fi=fi->obtProx();
-			
-				}
-				i=0;
-				con=prev;
-				actual=ini;
-				proximo=NULL;
-				while(fin>1)
-				{
-					proximo=actual->obtProx();
-					actual->modProx(prev);
-					prev=actual;
-					actual= proximo;
-					fin--;
-			
-				}
-				if (con != NULL) {
-            		con->modProx(prev);
-        		} 
-
-        		ini->modProx(actual);
-        		this->cola=actual;						
-
-			}
-			else
-			{
-				if(inicio==0 && fin < this->longitud)
-				{
-
-					for(i=0;i<inicio;i++)
-					{
-						prev=ini;
-						ini=ini->obtProx();
-
-					}
-					fi=ini;
-					for(i=inicio;i<fin;i++)
-					{
-						fi=fi->obtProx();
-			
-					}
-					i=0;
-					con=prev;
-					actual=ini;
-					proximo=NULL;
-					while(fin>1)
-					{
-						proximo=actual->obtProx();
-						actual->modProx(prev);
-						prev=actual;
-						actual= proximo;
-						fin--;
-			
-					}
-					if (con != NULL) {
-            			con->modProx(prev);
-        			} 
-
-        			ini->modProx(actual);
-        			this->cabeza=prev;						
-
-				}
-				else
-				{
-					cout<<"Error de indices"<<endl;
-				}
-			}
-
-		}
-
-	}
-}
 
 template <class Elemento>
 void Lista<Elemento>::modificar(Elemento e, int pos)
@@ -567,45 +322,11 @@ void Lista<Elemento>::vaciar()
     aux = this->cabeza;
   }
 
-	this->cabeza = NULL;
   	this->longitud = 0;
-  	this->cola=NULL;
 
 }
 
-template <class Elemento>
-void Lista<Elemento>::mezclarOrdenada(Lista<Elemento> &a, Lista<Elemento> &b)
-{
-  
 
-  while( !(a.esVacia())&& !(b.esVacia()) )
-  {
-    
-    
-    if(a.consultar(0) <= b.consultar(0))
-    {
-      this->insertar(a.consultar(0),0);
-      a.eliminar(0);
-    }
-    else
-    {
-      this->insertar(b.consultar(0),0);
-      b.eliminar(0);
-    }
-  }
-  while(!(a.esVacia()))
-  {
-    this->insertar(a.consultar(0),0);
-    a.eliminar(0);
-  }
-  while(!(b.esVacia()))
-  {
-    this->insertar(b.consultar(0),0);
-    b.eliminar(0);
-  }
-  this->invertir();
-
-}
 
 template <class Elemento>
 Lista<Elemento>::~Lista()

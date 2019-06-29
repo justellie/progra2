@@ -14,6 +14,7 @@ public:
   void print();
   Elemento tope();
   int obtLongitud();
+  void vaciar();
 };
 
 
@@ -56,5 +57,10 @@ template <class Elemento>
 int Pila<Elemento>::obtLongitud()
 {
   return Lista<Elemento>::obtLongitud();
+}
+template <class Elemento>
+void Pila<Elemento>::vaciar()
+{
+ Lista<Elemento>::vaciar();
 }
 #endif
