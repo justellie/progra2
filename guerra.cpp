@@ -11,32 +11,38 @@ using namespace std;
 
 int main()
 {
-    Cola<int> uno, dos,tres;
-    int a[26]={ 2, 3 ,4 ,5 ,6 ,7 ,8 ,9 ,10, 11 ,12, 13, 14, 2 ,3 ,4 ,5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
-    int b[26]={ 2, 3 ,4 ,5 ,6 ,7 ,8 ,9 ,10, 11 ,12, 13, 14, 2 ,3 ,4 ,5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
+    Cola<int> uno, dos;
+    //ifstream myfile;
 
 
-    int cont;
-    
+
+    int a , b,i,cont;
+    i=0;
     cont=0;
-    
-    
-
-    while(cont<26){
-        
-            
-            uno.encolar(a[cont]);
-            
-        
-        
-            
-            dos.encolar(b[cont]);
+    cin>> a;
+    while(cont<a){
+        i=0;
+        while(i<26)
+        {
+            cin>>b;
+            uno.encolar(b);
+            i+=1;
+        }
+        i=0;
+        b=0;
+        while(i<26)
+        {
+            cin>>b;
+            dos.encolar(b);
+            i+=1;
+        }
+        //uno.print();
+        //dos.print();
+        guerra(uno,dos);
+        uno.vaciar();
+        dos.vaciar();
         cont+=1;
-       
     }
-    guerra(uno,dos);
-    uno.vaciar();
-    dos.vaciar();
     return 0;
 
     
@@ -57,7 +63,7 @@ void guerra(Cola<int>& jugador1,Cola<int>&jugador2)
         carta2=jugador2.frente();
         jugador1.desencolar();
         jugador2.desencolar();
-        //cout<<carta1<<"Comparado a"<<carta2<<endl;
+       
         if(carta1>carta2)
         {
             jugador1.encolar(carta1);
@@ -131,9 +137,7 @@ void guerra(Cola<int>& jugador1,Cola<int>&jugador2)
             }
             
         }
-        //cout<<"Longitud jugador 1: "<<jugador1.obtLongitud()<<endl;  
-        //cout<<"Longitud jugador 2: "<<jugador2.obtLongitud()<<endl;
-        //Scout<<"Longitud  aux: "<<aux.obtLongitud()<<endl;        
+        
         
       
     }
