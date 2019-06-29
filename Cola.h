@@ -2,9 +2,11 @@
 #define COLA_H
 
 #include "Listas.h"
+#include "Nodo.h"
+
 
 template <class Elemento>
-class Cola : protected Lista<Elemento>
+class Cola : protected Lista<Elemento> 
 {
 private:
   Nodo<Elemento> *cola;	
@@ -17,6 +19,7 @@ public:
   Elemento frente();
   int obtLongitud();
   void vaciar(); 
+  void copiar(Cola<Elemento>&);
 
 };
 
@@ -77,6 +80,32 @@ template <class Elemento>
 void Cola<Elemento>::vaciar()
 {
    Lista<Elemento>::vaciar();
+}
+template <class Elemento>
+void Cola<Elemento>::copiar(Cola<Elemento>& a)
+{
+   Nodo<Elemento>*nuevo,*aux;
+   aux=a.cabeza;
+   while(aux!=NULL)
+   {
+      
+      if (this->longitud == 0)
+      {
+        Lista<Elemento>::insertar(aux->obtInfo(), 0);
+        this->cola = this->cabeza;
+      }
+      else
+      {
+        nuevo= new Nodo<Elemento>;
+        nuevo->modInfo(aux->obtInfo());
+        nuevo->modProx(NULL);
+        (this->cola)->modProx(nuevo);
+        this->cola = nuevo;
+        this->longitud += 1;
+      }
+      aux=aux->obtProx();
+   }
+
 }
 
 #endif
